@@ -108,7 +108,6 @@ public:
             return false;
         };
         
-        int id = getLeastChoices();
         dfs();
     }
 
