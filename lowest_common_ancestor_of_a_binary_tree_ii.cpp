@@ -24,6 +24,7 @@ class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         
+        // use dfs to search if Tree with given root has node p, q, and meanwhile find its LCA if p and q exists
         function<resultType(TreeNode*, TreeNode*, TreeNode*)> dfs = [&](TreeNode* root, TreeNode* p, TreeNode* q) -> resultType {
             if (!root || !p || !q) return resultType(false, false, NULL);
             resultType left = dfs(root->left, p, q);
@@ -38,13 +39,13 @@ public:
             if (left.node && right.node) { // p and q found on both sides
                 return resultType(existP, existQ, root);
             }
-            if (left.node) {
+            if (left.node) { // left subtree has p or q or its LCA
                 return resultType(existP, existQ, left.node);
             }
-            if (right.node) {
+            if (right.node) { // right subtree has p or q or its LCA
                 return resultType(existP, existQ, right.node);
             }
-            return resultType(false, false, NULL);
+            return resultType(false, false, NULL); // both p and q doesn't exist in tree
         }; 
         
         resultType res = dfs(root, p, q);
