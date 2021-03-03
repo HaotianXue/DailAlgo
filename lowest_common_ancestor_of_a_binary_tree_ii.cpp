@@ -8,6 +8,54 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
+// Approach i: dont use golbal variables
+class resultType {
+public:
+    bool existP, existQ;
+    TreeNode* node; // p or q or their LCA
+    
+    resultType(bool existP, bool existQ, TreeNode* node): existP(existP), existQ(existQ), node(node) {}
+    
+};
+
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+        function<resultType(TreeNode*, TreeNode*, TreeNode*)> dfs = [&](TreeNode* root, TreeNode* p, TreeNode* q) -> resultType {
+            if (!root || !p || !q) return resultType(false, false, NULL);
+            resultType left = dfs(root->left, p, q);
+            resultType right = dfs(root->right, p, q);
+            
+            bool existP = left.existP || right.existP || root == p;
+            bool existQ = left.existQ || right.existQ || root == q;
+            
+            if (p == root || q == root) { // either p or q is root
+                return resultType(existP, existQ, root);
+            }
+            if (left.node && right.node) { // p and q found on both sides
+                return resultType(existP, existQ, root);
+            }
+            if (left.node) {
+                return resultType(existP, existQ, left.node);
+            }
+            if (right.node) {
+                return resultType(existP, existQ, right.node);
+            }
+            return resultType(false, false, NULL);
+        }; 
+        
+        resultType res = dfs(root, p, q);
+        if (res.existP && res.existQ) return res.node;
+        return NULL;
+    }
+    
+};
+
+
+// Approach ii: use global variables
 class Solution {
 public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
