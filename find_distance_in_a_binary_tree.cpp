@@ -12,6 +12,7 @@
  */
 
 // Approach i: one pass
+// https://leetcode.com/problems/find-distance-in-a-binary-tree/discuss/1039737/Detailed-explanation-of-how-to-solve-in-ONE-pass-based-on-LCA-approach
 class Solution {
 public:
     int findDistance(TreeNode* root, int p, int q) {
