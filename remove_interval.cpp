@@ -1,4 +1,26 @@
 // https://leetcode.com/problems/remove-interval/
+
+// Approach i
+class Solution {
+public:
+    vector<vector<int>> removeInterval(vector<vector<int>>& intervals, vector<int>& toBeRemoved) {
+        vector<vector<int>> res;
+        
+        int start = toBeRemoved[0], end = toBeRemoved[1];
+        
+        for (auto interval: intervals) {
+            if (interval[1] <= start || interval[0] >= end) res.push_back(interval);
+            else { // overlaps
+                if (start > interval[0]) res.push_back({interval[0], start});
+                if (end < interval[1]) res.push_back({end, interval[1]});
+            }
+        }
+        
+        return res;
+    }
+};
+
+// Approach ii
 class Solution {
 public:
     vector<vector<int>> removeInterval(vector<vector<int>>& intervals, vector<int>& toBeRemoved) {
