@@ -1,5 +1,33 @@
 // https://leetcode.com/problems/remove-covered-intervals/
 
+// Approach i
+class Solution {
+public:
+    int removeCoveredIntervals(vector<vector<int>>& intervals) {
+        int n = intervals.size();
+        if (n <= 1) return n;
+        
+        // start time increasing + end time decreasing (to make sure only previous can cover current)
+        sort(intervals.begin(), intervals.end(), 
+             [](vector<int>& v1, vector<int>& v2) {
+                 if (v1[0] == v2[0]) return v2[1] < v1[1];
+                 return v1[0] < v2[0];
+        });
+        
+        int res = 0;
+        int end = 0;
+        for (int i = 0; i < n; ++i) {
+            if (end < intervals[i][1]) {
+                end = intervals[i][1];
+                ++res;
+            }
+        }
+        
+        return res;
+    }
+};
+
+// Approach ii
 class Solution {
 public:
     int removeCoveredIntervals(vector<vector<int>>& intervals) {
