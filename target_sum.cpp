@@ -2,6 +2,24 @@
 
 class Solution {
 public:
+
+    // dfs
+    int findTargetSumWays_memo(vector<int>& nums, int S) {
+        
+        int n = nums.size();
+        
+        unordered_map<string, int> memo;
+        
+        function<int(int, int)> dfs = [&](int index, int curSum) {
+            if (index == n) return curSum == S ? 1 : 0;
+            string key = to_string(index) + "-" + to_string(curSum);
+            if (memo.count(key)) return memo[key];
+            return memo[key] = dfs(index + 1, curSum + nums[index]) + dfs(index + 1, curSum - nums[index]);
+        };
+        
+        return dfs(0, 0);
+    }
+    
     int findTargetSumWays(vector<int>& nums, int S) {
         int sum = 0, n = nums.size();
         for (int num: nums) sum += num;
