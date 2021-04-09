@@ -18,6 +18,29 @@ public:
     // Approach I
     vector<int> flipMatchVoyage(TreeNode* root, vector<int>& voyage) {
         // pre-order traversal
+        // Global integer i indicates next index in voyage v.
+        // If current node == null, it's fine, we return true
+        // If current node.val != v[i], doesn't match wanted value, return false
+        // If left child exist but don't have wanted value, flip it with right child.
+        vector<int> flips;
+        int pos = 0;
+        
+        function<bool(TreeNode*)> dfs = [&](TreeNode* node) {
+            if (!node) return true;
+            if (node->val != voyage[pos++]) return false;
+            if (node->left && node->left->val != voyage[pos]) {
+                flips.push_back(node->val);
+                return dfs(node->right) && dfs(node->left);
+            }
+            return dfs(node->left) && dfs(node->right);
+        };
+        
+        return dfs(root) ? flips : vector<int>{-1};
+    }
+
+    // Approach II
+    vector<int> flipMatchVoyage(TreeNode* root, vector<int>& voyage) {
+        // pre-order traversal
         // 1. 定义布尔类型的递归，如果当前结点和子树已经不可能和给定的游历顺序匹配，则返回 false；否则返回 true。
         // 2. 当前结点为空，返回 true；如果当前结点的值和给定的游历顺序的下一个值不相等，返回 false；
         // 3. 通过了 2 之后，首先递归左子树和右子树，如果二者返回值都是 true，则返回 true；
@@ -48,7 +71,7 @@ public:
         return flips;
     }
 
-    // Approach II
+    // Approach III
     vector<int> flipMatchVoyage(TreeNode* root, vector<int>& voyage) {
         // pre-order traversal
         vector<int> flips;
