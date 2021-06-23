@@ -1,6 +1,24 @@
 // https://leetcode.com/problems/interval-list-intersections/
 class Solution {
 public:
+
+    // two pointers
+    vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
+        int n = firstList.size(), m = secondList.size();
+        int i = 0, j = 0;
+        vector<vector<int>> res;
+        while (i < n && j < m) {
+            int s = max(firstList[i][0], secondList[j][0]);
+            int e = min(firstList[i][1], secondList[j][1]);
+            if (s <= e) res.push_back({s, e});
+            if (firstList[i][1] < secondList[j][1]) ++i;
+            else ++j;
+        }
+        
+        return res;
+    }
+
+    // sweep line
     vector<vector<int>> intervalIntersection(vector<vector<int>>& firstList, vector<vector<int>>& secondList) {
         vector<vector<int>> res;
         if (firstList.size() == 0 || secondList.size() == 0) return res;
